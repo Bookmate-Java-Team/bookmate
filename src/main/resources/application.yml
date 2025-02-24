@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: bookmate
+  mail:
+    host: ${MAIL_HOST}
+    username: ${MAIL_USERNAME}
+    port: ${MAIL_PORT}
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: 'true'
+          auth: 'true'
+    password: ${MAIL_PASSWORD}
+  jpa:
+    database: mysql
+    show-sql: 'true'
+    hibernate:
+      ddl-auto: update
+  datasource:
+    driver-class-name: ${DB_DRIVER}
+    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?serverTimezone=UTC&characterEncoding=UTF-8
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  data:
+    redis:
+      port: ${REDIS_PORT}
+      host: ${REDIS_HOST}
+jwt:
+  secret-key: ${JWT_SECRET}
+  access-token: ${JWT_ACCESS_TOKEN_EXPIRATION}
+  refresh-token: ${JWT_REFRESH_TOKEN_EXPIRATION}
