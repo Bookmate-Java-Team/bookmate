@@ -30,3 +30,6 @@ jwt:
   secret-key: ${JWT_SECRET}
   access-token: ${JWT_ACCESS_TOKEN_EXPIRATION}
   refresh-token: ${JWT_REFRESH_TOKEN_EXPIRATION}
+
+aladin:
+  api-key: 'ttbtkdalsrb1471747001'
