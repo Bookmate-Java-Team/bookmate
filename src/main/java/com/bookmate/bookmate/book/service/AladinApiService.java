@@ -29,12 +29,12 @@ public class AladinApiService {
    * @return 검색된 도서 정보가 담긴 {@link List} 객체, 각 항목은 {@link AladinApiResponseDto} 객체
    * @throws RuntimeException 알라딘 API 호출 실패 또는 처리 중 오류 발생 시
    */
-  public List<AladinApiResponseDto> searchBooks(String query) {
+  public List<AladinApiResponseDto> searchBooks(String query, String startPage) {
     try {
       String API_URL = "https://www.aladin.co.kr/ttb/api/ItemSearch.aspx";
       String url = String.format(
-          "%s?ttbkey=%s&Query=%s&QueryType=Title&MaxResults=10&start=1&output=js&Version=20131101",
-          API_URL, API_KEY, query);
+          "%s?ttbkey=%s&Query=%s&QueryType=Title&MaxResults=8&start=%s&output=js&Version=20131101",
+          API_URL, API_KEY, query, startPage  );
 
       ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
 
@@ -47,12 +47,14 @@ public class AladinApiService {
           String author = node.get("author").asText();
           String pubDate = node.get("pubDate").asText();
           String description = node.get("description").asText();
-          String isbn = node.get("isbn").asText();
+          String isbn13 = node.get("isbn13").asText();
           String cover = node.get("cover").asText();
           String publisher = node.get("publisher").asText();
           int priceStandard = node.get("priceStandard").asInt();
 
-          result.add(new AladinApiResponseDto(title, author, pubDate, description, isbn, cover, publisher, priceStandard));
+          result.add(
+              new AladinApiResponseDto(title, author, pubDate, description, isbn13, cover, publisher,
+                  priceStandard));
         }
         return result;
       } else {
