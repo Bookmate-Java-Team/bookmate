@@ -22,4 +22,10 @@ public class BookController {
     return ResponseEntity.ok(itemList);
   }
 
+  @GetMapping("/search/bestseller")
+  public ResponseEntity<List<AladinApiResponseDto>> searchBestSellerBooks(@RequestParam String startPage) {
+    List<AladinApiResponseDto> itemList = aladinApiService.searchBestSellerBooks(startPage);
+    return ResponseEntity.ok(itemList);
+  }
+
 }
