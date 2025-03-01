@@ -4,7 +4,6 @@ package com.bookmate.bookmate.main.service;
 import com.bookmate.bookmate.main.dto.AladinApiResponseDto;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;

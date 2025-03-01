@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/reviews")
 @ResponseBody
 public class ReviewController {
+
   private final ReviewService reviewService;
 
   @PostMapping
@@ -35,7 +36,8 @@ public class ReviewController {
 
   @GetMapping("/{isbn}/list.do")
   public ResponseEntity<List<ReviewDto>> getReviewsByIsbn(@PathVariable String isbn) {
-    return ResponseEntity.ok(reviewService.getReviewsByIsbn(isbn).stream().map(ReviewDto::toDto).toList());
+    return ResponseEntity.ok(
+        reviewService.getReviewsByIsbn(isbn).stream().map(ReviewDto::toDto).toList());
   }
 
   @PutMapping("/{id}")
