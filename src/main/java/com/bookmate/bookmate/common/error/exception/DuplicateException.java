@@ -5,14 +5,13 @@ import lombok.Getter;
 @Getter
 public class DuplicateException extends BusinessException {
 
-  private String value;
+  private final String value;
 
-  public DuplicateException(String value) {
+  public DuplicateException(final String value) {
     this(value, ErrorCode.DUPLICATE);
-    this.value = value;
   }
 
-  public DuplicateException(String value, ErrorCode errorCode) {
+  public DuplicateException(final String value, final ErrorCode errorCode) {
     super(value, errorCode);
     this.value = value;
   }

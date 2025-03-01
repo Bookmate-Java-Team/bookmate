@@ -25,7 +25,7 @@ public class GlobalExceptionHandler {
    */
   @ExceptionHandler(MethodArgumentNotValidException.class)
   protected ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(
-      MethodArgumentNotValidException e) {
+      final MethodArgumentNotValidException e) {
     log.info("Handle MethodArgumentNotValidException", e);
 
     final int status = HttpStatus.BAD_REQUEST.value();
@@ -40,7 +40,7 @@ public class GlobalExceptionHandler {
    */
   @ExceptionHandler(MethodArgumentTypeMismatchException.class)
   protected ResponseEntity<ErrorResponse> handleMethodArgumentTypeMismatchException(
-      MethodArgumentTypeMismatchException e) {
+      final MethodArgumentTypeMismatchException e) {
     log.info("Handle MethodArgumentTypeMismatchException", e);
 
     final int status = HttpStatus.BAD_REQUEST.value();
@@ -54,7 +54,7 @@ public class GlobalExceptionHandler {
    */
   @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
   protected ResponseEntity<ErrorResponse> handleHttpRequestMethodNotSupportedException(
-      HttpRequestMethodNotSupportedException e) {
+      final HttpRequestMethodNotSupportedException e) {
     log.info("Handle HttpRequestMethodNotSupportedException", e);
 
     final int status = HttpStatus.METHOD_NOT_ALLOWED.value();
@@ -68,21 +68,20 @@ public class GlobalExceptionHandler {
    */
   @ExceptionHandler(HttpMessageNotReadableException.class)
   protected ResponseEntity<ErrorResponse> handleHttpMessageNotReadableException(
-      HttpMessageNotReadableException e) {
+      final HttpMessageNotReadableException e) {
     log.info("Handle HttpMessageNotReadableException", e);
 
     final int status = HttpStatus.BAD_REQUEST.value();
     final ErrorResponse response = ErrorResponse.of(status, ErrorCode.INVALID_TYPE_VALUE);
 
-    return new ResponseEntity<>(response,
-        HttpStatus.valueOf(status));
+    return new ResponseEntity<>(response, HttpStatus.valueOf(status));
   }
 
   /**
    * 서버에서 발생하는 모든 예상치 못한 예외 처리
    */
   @ExceptionHandler(Exception.class)
-  protected ResponseEntity<ErrorResponse> handleException(Exception e) {
+  protected ResponseEntity<ErrorResponse> handleException(final Exception e) {
     log.error("Handle Exception", e);
 
     final int status = HttpStatus.INTERNAL_SERVER_ERROR.value();
@@ -139,7 +138,7 @@ public class GlobalExceptionHandler {
    * 인증 오류 (401 UNAUTHORIZED)
    */
   @ExceptionHandler(UnauthorizedException.class)
-  protected ResponseEntity<ErrorResponse> handleUnauthorizedException(UnauthorizedException e) {
+  protected ResponseEntity<ErrorResponse> handleUnauthorizedException(final UnauthorizedException e) {
     log.info("Handle UnauthorizedException", e);
 
     final int status = HttpStatus.UNAUTHORIZED.value();
@@ -152,7 +151,7 @@ public class GlobalExceptionHandler {
    * 권한이 없는 사용자가 접근하려고 할 때 (403 FORBIDDEN)
    */
   @ExceptionHandler(ForbiddenException.class)
-  protected ResponseEntity<ErrorResponse> handleForbiddenException(ForbiddenException e) {
+  protected ResponseEntity<ErrorResponse> handleForbiddenException(final ForbiddenException e) {
     log.info("Handle ForbiddenException", e);
 
     final int status = HttpStatus.FORBIDDEN.value();

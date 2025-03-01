@@ -5,14 +5,13 @@ import lombok.Getter;
 @Getter
 public class NotFoundException extends BusinessException {
 
-  private String value;
+  private final String value;
 
-  public NotFoundException(String value) {
+  public NotFoundException(final String value) {
     this(value, ErrorCode.NOT_FOUND);
-    this.value = value;
   }
 
-  public NotFoundException(String value, ErrorCode errorCode) {
+  public NotFoundException(final String value, final ErrorCode errorCode) {
     super(value, errorCode);
     this.value = value;
   }
