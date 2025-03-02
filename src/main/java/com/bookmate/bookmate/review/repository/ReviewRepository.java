@@ -8,7 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, Long> {
 
-//  List<Review> findAllByDeletedAtIsNull(String isbn);
-
   List<Review> findAllByIsbn(String isbn);
 }

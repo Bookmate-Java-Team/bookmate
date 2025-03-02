@@ -1,10 +1,12 @@
 package com.bookmate.bookmate.review.controller;
 
-import com.bookmate.bookmate.review.dto.ReviewDto;
+import com.bookmate.bookmate.review.dto.ReviewRequestDto;
+import com.bookmate.bookmate.review.dto.ReviewResponseDto;
 import com.bookmate.bookmate.review.service.ReviewService;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,32 +26,33 @@ public class ReviewController {
   private final ReviewService reviewService;
 
   @PostMapping
-  public ResponseEntity<String> createReview(@Valid ReviewDto reviewDto) {
-    reviewService.createReview(reviewDto);
-    return ResponseEntity.ok("리뷰가 작성되었습니다.");
+  public ResponseEntity<ReviewResponseDto> createReview(@Valid ReviewRequestDto reviewRequestDto) {
+    return ResponseEntity.status(HttpStatus.CREATED)
+        .body(ReviewResponseDto.toDto(reviewService.createReview(reviewRequestDto)));
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<ReviewDto> getReview(@PathVariable Long id) {
-    return ResponseEntity.ok(ReviewDto.toDto(reviewService.getReview(id)));
+  public ResponseEntity<ReviewResponseDto> getReview(@PathVariable Long id) {
+    return ResponseEntity.ok(ReviewResponseDto.toDto(reviewService.getReview(id)));
   }
 
   @GetMapping("/{isbn}/list.do")
-  public ResponseEntity<List<ReviewDto>> getReviewsByIsbn(@PathVariable String isbn) {
+  public ResponseEntity<List<ReviewResponseDto>> getReviewsByIsbn(@PathVariable String isbn) {
     return ResponseEntity.ok(
-        reviewService.getReviewsByIsbn(isbn).stream().map(ReviewDto::toDto).toList());
+        reviewService.getReviewsByIsbn(isbn).stream().map(ReviewResponseDto::toDto).toList());
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<String> updateReview(@PathVariable Long id, @Valid ReviewDto reviewDto) {
-    reviewService.updateReview(id, reviewDto);
-    return ResponseEntity.ok("리뷰가 수정되었습니다.");
+  public ResponseEntity<ReviewResponseDto> updateReview(@PathVariable Long id,
+      @Valid ReviewRequestDto reviewRequestDto) {
+    return ResponseEntity.ok(
+        ReviewResponseDto.toDto(reviewService.updateReview(id, reviewRequestDto)));
   }
 
   @DeleteMapping("/{id}")
   public ResponseEntity<String> deleteReview(@PathVariable Long id) {
     reviewService.deleteReview(id);
-    return ResponseEntity.ok("리뷰가 삭제되었습니다.");
+    return ResponseEntity.noContent().build();
   }
 
 

@@ -1,6 +1,6 @@
 package com.bookmate.bookmate.review.service;
 
-import com.bookmate.bookmate.review.dto.ReviewDto;
+import com.bookmate.bookmate.review.dto.ReviewRequestDto;
 import com.bookmate.bookmate.review.entity.Review;
 import com.bookmate.bookmate.review.repository.ReviewRepository;
 import jakarta.validation.Valid;
@@ -16,10 +16,9 @@ public class ReviewService {
   private final ReviewRepository reviewRepository;
 
   @Transactional
-  public void createReview(ReviewDto reviewDto) {
-    reviewRepository.save(
-        Review.builder().isbn(reviewDto.getIsbn()).title(reviewDto.getTitle())
-            .content(reviewDto.getContent()).rating(reviewDto.getRating()).build());
+  public Review createReview(ReviewRequestDto reviewRequestDto) {
+    return reviewRepository.save(
+        reviewRequestDto.toEntity());
   }
 
   @Transactional(readOnly = true)
@@ -33,10 +32,10 @@ public class ReviewService {
   }
 
   @Transactional
-  public void updateReview(Long id, @Valid ReviewDto reviewDto) {
+  public Review updateReview(Long id, @Valid ReviewRequestDto reviewRequestDto) {
     Review review = findReviewById(id);
 
-    review.update(reviewDto);
+    return review.update(reviewRequestDto);
   }
 
   @Transactional

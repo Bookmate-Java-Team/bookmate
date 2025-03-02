@@ -1,6 +1,6 @@
 package com.bookmate.bookmate.review.entity;
 
-import com.bookmate.bookmate.review.dto.ReviewDto;
+import com.bookmate.bookmate.review.dto.ReviewRequestDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -59,11 +59,13 @@ public class Review {
   @Column(name = "deleted_at")
   private LocalDateTime deletedAt;
 
-  public void update(ReviewDto reviewDto) {
-    this.title = reviewDto.getTitle();
-    this.content = reviewDto.getContent();
-    this.rating = reviewDto.getRating();
+  public Review update(ReviewRequestDto reviewRequestDto) {
+    this.title = reviewRequestDto.getTitle();
+    this.content = reviewRequestDto.getContent();
+    this.rating = reviewRequestDto.getRating();
     this.updatedAt = LocalDateTime.now();
+
+    return this;
   }
 
   public void softDelete() {

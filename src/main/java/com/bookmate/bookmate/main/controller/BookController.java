@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/main")
+@RequestMapping("/book")
 @RequiredArgsConstructor
 public class BookController {
   private final AladinApiService aladinApiService;
@@ -27,5 +27,4 @@ public class BookController {
     List<AladinApiResponseDto> itemList = aladinApiService.searchBestSellerBooks(startPage);
     return ResponseEntity.ok(itemList);
   }
-
 }

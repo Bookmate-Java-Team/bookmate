@@ -5,7 +5,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.bookmate.bookmate.review.dto.ReviewDto;
+import com.bookmate.bookmate.review.dto.ReviewRequestDto;
 import com.bookmate.bookmate.review.entity.Review;
 import com.bookmate.bookmate.review.repository.ReviewRepository;
 import java.util.Arrays;
@@ -32,7 +32,7 @@ class ReviewServiceTest {
   @DisplayName("리뷰 생성 - 성공")
   void createReview_success() {
     //given
-    ReviewDto reviewDto = new ReviewDto("title", "content", "isbn", 3);
+    ReviewRequestDto reviewDto = new ReviewRequestDto("title", "content", "isbn", 3);
     Review review = Review.builder().title(reviewDto.getTitle()).content(reviewDto.getContent())
         .isbn(reviewDto.getIsbn()).rating(reviewDto.getRating()).build();
 
@@ -98,7 +98,7 @@ class ReviewServiceTest {
     //given
     Review review = Review.builder().content("title").content("content").rating(5)
         .isbn("1111111111111").build();
-    ReviewDto reviewDto = new ReviewDto("new_title", "new_content", "1111111111111", 3);
+    ReviewRequestDto reviewDto = new ReviewRequestDto("new_title", "new_content", "1111111111111", 3);
     when(reviewRepository.findById(1L)).thenReturn(Optional.of((review)));
 
     //when
