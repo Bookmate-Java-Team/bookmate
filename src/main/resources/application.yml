@@ -32,4 +32,4 @@ jwt:
   refresh-token: ${JWT_REFRESH_TOKEN_EXPIRATION}
 
 aladin:
-  api-key: 'ttbtkdalsrb1471747001'
+  api-key: ${ALADIN_API_KEY}
