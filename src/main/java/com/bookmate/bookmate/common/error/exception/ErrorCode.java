@@ -18,12 +18,13 @@ public enum ErrorCode {
   // User
   EMAIL_DUPLICATE("U-001", "Duplicate Email Address"),
   NICKNAME_DUPLICATE("U-002", "Duplicate Nickname"),
-  WRONG_EMAIL_OR_PASSWORD("U-003", "Wrong Email or Password"),
-  USER_NOT_FOUND("U-004", "User Not Found"),
-  USER_DEACTIVATED("U-005", "User has been deactivated"),
-  ACCESS_TOKEN_NOT_EXPIRED_YET("U-006", "AccessToken is not expired yet"),
-  INVALID_REFRESH_TOKEN("U-007", "Invalid Refresh Token"),
-  REFRESH_TOKEN_MISMATCH("U-008", "Refresh Token mismatch. Re-login required");
+  WRONG_EMAIL("U-003", "Wrong Email"),
+  PASSWORD_MISMATCH("U-004", "Password mismatch"),
+  USER_NOT_FOUND("U-005", "User Not Found"),
+  USER_DEACTIVATED("U-006", "User has been deactivated"),
+  ACCESS_TOKEN_NOT_EXPIRED_YET("U-007", "AccessToken is not expired yet"),
+  INVALID_REFRESH_TOKEN("U-008", "Invalid Refresh Token"),
+  REFRESH_TOKEN_MISMATCH("U-009", "Refresh Token mismatch. Re-login required");
 
   private final String code;
   private final String message;

@@ -6,6 +6,10 @@ import lombok.Getter;
 public class UnauthorizedException extends BusinessException {
 
   public UnauthorizedException() {
-    super("Unauthorized", ErrorCode.HANDLE_ACCESS_DENIED);
+    super(ErrorCode.HANDLE_ACCESS_DENIED);
+  }
+
+  public UnauthorizedException(final ErrorCode errorCode) {
+    super(errorCode);
   }
 }

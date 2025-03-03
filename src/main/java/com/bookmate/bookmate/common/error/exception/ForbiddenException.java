@@ -6,6 +6,10 @@ import lombok.Getter;
 public class ForbiddenException extends BusinessException {
 
   public ForbiddenException() {
-    super("Forbidden", ErrorCode.HANDLE_ACCESS_DENIED);
+    super(ErrorCode.HANDLE_ACCESS_DENIED);
+  }
+
+  public ForbiddenException(final ErrorCode errorCode) {
+    super(errorCode);
   }
 }

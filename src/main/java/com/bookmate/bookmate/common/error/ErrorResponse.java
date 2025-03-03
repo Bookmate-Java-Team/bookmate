@@ -39,8 +39,17 @@ public class ErrorResponse {
       final BindingResult bindingResult) {
 
     List<String> values = bindingResult.getFieldErrors().stream()
-        .map(error ->
-            error.getRejectedValue() == null ? "" : error.getRejectedValue().toString())
+        .map(error -> {
+          String field = error.getField(); // 필드명
+          String defaultMessage = error.getDefaultMessage(); // @Size, @Email 등에서 정의한 메시지
+          Object rejectedValue = error.getRejectedValue(); // 거절된 값
+
+          if (rejectedValue == null) {
+            return String.format("%s: %s", field, defaultMessage);
+          } else {
+            return String.format("%s: %s (입력값: %s)", field, defaultMessage, rejectedValue);
+          }
+        })
         .collect(Collectors.toList());
     return new ErrorResponse(status, code, values);
   }
