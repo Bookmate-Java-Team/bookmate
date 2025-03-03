@@ -12,7 +12,16 @@ public class NotFoundException extends BusinessException {
   }
 
   public NotFoundException(final String value, final ErrorCode errorCode) {
-    super(value, errorCode);
+    super(errorCode);
     this.value = value;
+  }
+
+  public NotFoundException(final Long value) {
+    this(value, ErrorCode.NOT_FOUND);
+  }
+
+  public NotFoundException(final Long value, final ErrorCode errorCode) {
+    super(errorCode);
+    this.value = value.toString();
   }
 }

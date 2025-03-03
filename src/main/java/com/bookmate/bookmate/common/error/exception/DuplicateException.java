@@ -12,7 +12,7 @@ public class DuplicateException extends BusinessException {
   }
 
   public DuplicateException(final String value, final ErrorCode errorCode) {
-    super(value, errorCode);
+    super(errorCode);
     this.value = value;
   }
 }

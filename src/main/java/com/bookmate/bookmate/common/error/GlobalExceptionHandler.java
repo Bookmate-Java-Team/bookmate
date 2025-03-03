@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -98,7 +99,7 @@ public class GlobalExceptionHandler {
     log.info("Handle BusinessException", e);
 
     final ErrorCode errorCode = e.getErrorCode();
-    final int status = HttpStatus.BAD_GATEWAY.value();
+    final int status = HttpStatus.BAD_REQUEST.value();
     final ErrorResponse response = ErrorResponse.of(status, errorCode);
 
     return new ResponseEntity<>(response, HttpStatus.valueOf(status));
@@ -156,6 +157,16 @@ public class GlobalExceptionHandler {
 
     final int status = HttpStatus.FORBIDDEN.value();
     final ErrorResponse response = ErrorResponse.of(status, e.getErrorCode());
+
+    return new ResponseEntity<>(response, HttpStatus.valueOf(status));
+  }
+
+  @ExceptionHandler(AccessDeniedException.class)
+  protected ResponseEntity<ErrorResponse> handleAccessDeniedException(final AccessDeniedException e) {
+    log.info("Handle AccessDeniedException", e);
+
+    final int status = HttpStatus.FORBIDDEN.value();
+    final ErrorResponse response = ErrorResponse.of(status, ErrorCode.HANDLE_ACCESS_DENIED);
 
     return new ResponseEntity<>(response, HttpStatus.valueOf(status));
   }
