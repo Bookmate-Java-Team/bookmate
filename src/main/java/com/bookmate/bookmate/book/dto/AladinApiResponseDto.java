@@ -1,4 +1,4 @@
-package com.bookmate.bookmate.main.dto;
+package com.bookmate.bookmate.book.dto;
 
 
 import lombok.AllArgsConstructor;

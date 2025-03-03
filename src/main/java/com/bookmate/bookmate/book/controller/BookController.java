@@ -1,7 +1,7 @@
-package com.bookmate.bookmate.main.controller;
+package com.bookmate.bookmate.book.controller;
 
-import com.bookmate.bookmate.main.dto.AladinApiResponseDto;
-import com.bookmate.bookmate.main.service.AladinApiService;
+import com.bookmate.bookmate.book.dto.AladinApiResponseDto;
+import com.bookmate.bookmate.book.service.AladinApiService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
