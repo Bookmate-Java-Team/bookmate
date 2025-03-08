@@ -2,9 +2,9 @@ package com.bookmate.bookmate.book.service;
 
 import com.bookmate.bookmate.book.dto.BookRequestDto;
 import com.bookmate.bookmate.book.entity.Book;
-import com.bookmate.bookmate.book.entity.UserBookRecords;
+import com.bookmate.bookmate.book.entity.UserBookRecord;
 import com.bookmate.bookmate.book.repository.BookRepository;
-import com.bookmate.bookmate.book.repository.UserBookRecordsRepository;
+import com.bookmate.bookmate.book.repository.UserBookRecordRepository;
 import com.bookmate.bookmate.user.entity.User;
 import com.bookmate.bookmate.user.exception.UserNotFoundException;
 import com.bookmate.bookmate.user.repository.UserRepository;
@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class BookService {
 
   private final BookRepository bookRepository;
-  private final UserBookRecordsRepository userBookRecordsRepository;
+  private final UserBookRecordRepository userBookRecordRepository;
   private final UserRepository userRepository;
 
   @Transactional
@@ -25,9 +25,10 @@ public class BookService {
     User user = userRepository.findById(userId)
         .orElseThrow(() -> new UserNotFoundException(userId));
 
-    Book book = bookRepository.save(bookRequestDto.toEntity());
+    Book book = bookRepository.findByIsbn(bookRequestDto.getIsbn())
+        .orElseGet(() -> bookRepository.save(bookRequestDto.toEntity()));
 
-    userBookRecordsRepository.save(UserBookRecords.builder().user(user).book(book).build());
+    userBookRecordRepository.save(UserBookRecord.builder().user(user).book(book).readDate(bookRequestDto.getReadDate()).build());
 
     return book;
   }

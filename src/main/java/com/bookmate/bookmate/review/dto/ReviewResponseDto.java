@@ -21,7 +21,7 @@ public class ReviewResponseDto {
     return ReviewResponseDto.builder()
         .title(review.getTitle())
         .content(review.getContent())
-        .isbn(review.getIsbn())
+        .isbn(review.getUserBookRecord().getBook().getIsbn())
         .rating(review.getRating())
         .build();
   }

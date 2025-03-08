@@ -36,7 +36,7 @@ public class BookController {
     return ResponseEntity.ok(itemList);
   }
 
-  @PostMapping("/save-book")
+  @PostMapping
   public ResponseEntity<BookResponseDto> userSavedBook(@AuthenticationPrincipal CustomUserDetails userDetails, @Valid BookRequestDto bookRequestDto) {
     Long userId = userDetails.getUser().getId();
     return ResponseEntity.ok(BookResponseDto.toDto(bookService.userSavedBook(userId, bookRequestDto)));

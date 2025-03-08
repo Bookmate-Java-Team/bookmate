@@ -12,6 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,12 +23,14 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "user_book_records", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "book_id"}))
+@Table(name = "user_book_record", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id",
+    "book_id"}))
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserBookRecords {
+public class UserBookRecord {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -40,8 +43,11 @@ public class UserBookRecords {
   @JoinColumn(name = "book_id", nullable = false)
   private Book book;
 
+  @Column(name = "read_date")
+  private LocalDate readDate;
+
   @Column(updatable = false)
   @CreatedDate
-  private LocalDateTime savedAt;
+  private LocalDateTime createdAt;
 
 }
