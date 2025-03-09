@@ -24,4 +24,5 @@ public class NotFoundException extends BusinessException {
     super(errorCode);
     this.value = value.toString();
   }
+
 }

@@ -37,6 +37,7 @@ public class SecurityConfig {
             .requestMatchers("/api/users/refresh-token").permitAll()
             .requestMatchers("/book/**").permitAll()
             .requestMatchers("/post/**").permitAll()
+            .requestMatchers("/review/**").permitAll()
             .anyRequest().authenticated()
         )
         .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

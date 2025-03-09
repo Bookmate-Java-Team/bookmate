@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserBookRecordRepository extends JpaRepository<UserBookRecord, Long> {
 
-  boolean existsByBookAndUser(@NotNull Book book, User user);
-
   Optional<List<UserBookRecord>> findAllByBook(Book book);
+
+  Optional<UserBookRecord> findByUserAndBook(User user, Book book);
 }

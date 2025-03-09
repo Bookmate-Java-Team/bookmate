@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Data
 @AllArgsConstructor
@@ -34,6 +35,7 @@ public class BookRequestDto {
   private String coverUrl;
 
   @NotNull
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
   private LocalDate readDate;
 
   public Book toEntity() {
