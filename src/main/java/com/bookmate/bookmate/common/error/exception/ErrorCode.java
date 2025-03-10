@@ -24,7 +24,23 @@ public enum ErrorCode {
   USER_DEACTIVATED("U-006", "User has been deactivated"),
   ACCESS_TOKEN_NOT_EXPIRED_YET("U-007", "AccessToken is not expired yet"),
   INVALID_REFRESH_TOKEN("U-008", "Invalid Refresh Token"),
-  REFRESH_TOKEN_MISMATCH("U-009", "Refresh Token mismatch. Re-login required");
+  REFRESH_TOKEN_MISMATCH("U-009", "Refresh Token mismatch. Re-login required"),
+
+  // Review
+  REVIEW_NOT_FOUND("R-001", "Review Not Found"),
+  REVIEW_PERMISSION_DENIED("R-002", "You do not have permission to write a review"),
+  DUPLICATE_REVIEW("R-003", "You have already written a review for this book"),
+  REVIEW_UPDATE_DENIED("R-004", "You do not have permission to update this review"),
+  REVIEW_DELETE_DENIED("R-005", "You do not have permission to delete this review"),
+
+  // Book
+  BOOK_NOT_FOUND("BOOK-001", "Book Not Found"),
+
+  // Post
+  POST_NOT_FOUND("P-001", "Post Not Found"),
+  POST_UPDATE_DENIED("P-002", "You do not have permission to update this post"),
+  POST_DELETE_DENIED("P-003", "You do not have permission to delete this post"),
+  ;
 
   private final String code;
   private final String message;

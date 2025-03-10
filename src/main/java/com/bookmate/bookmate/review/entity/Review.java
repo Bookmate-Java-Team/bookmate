@@ -1,12 +1,17 @@
 package com.bookmate.bookmate.review.entity;
 
+import com.bookmate.bookmate.book.entity.UserBookRecord;
 import com.bookmate.bookmate.review.dto.ReviewRequestDto;
+import com.bookmate.bookmate.review.dto.ReviewUpdateRequestDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -33,12 +38,9 @@ public class Review {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-//  @ManyToOne(fetch = FetchType.LAZY)
-//  @JoinColumn(name = "user_id", nullable = false)
-//  private User user;
-
-  @Column(name = "isbn", nullable = false, length = 13)
-  private String isbn;
+  @OneToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "user_book_record_id", nullable = false)
+  private UserBookRecord userBookRecord;
 
   @Column(name = "title", nullable = false)
   private String title;
@@ -59,10 +61,16 @@ public class Review {
   @Column(name = "deleted_at")
   private LocalDateTime deletedAt;
 
-  public Review update(ReviewRequestDto reviewRequestDto) {
-    this.title = reviewRequestDto.getTitle();
-    this.content = reviewRequestDto.getContent();
-    this.rating = reviewRequestDto.getRating();
+  public Review update(ReviewUpdateRequestDto reviewUpdateRequestDto) {
+    if (reviewUpdateRequestDto.getTitle() != null) {
+      this.title = reviewUpdateRequestDto.getTitle();
+    }
+    if (reviewUpdateRequestDto.getContent() != null) {
+      this.content = reviewUpdateRequestDto.getContent();
+    }
+    if (reviewUpdateRequestDto.getRating() != null) {
+      this.rating = reviewUpdateRequestDto.getRating();
+    }
     this.updatedAt = LocalDateTime.now();
 
     return this;

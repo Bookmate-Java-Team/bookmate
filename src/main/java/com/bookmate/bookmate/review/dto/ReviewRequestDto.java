@@ -1,6 +1,9 @@
 package com.bookmate.bookmate.review.dto;
 
+import com.bookmate.bookmate.book.entity.Book;
+import com.bookmate.bookmate.book.entity.UserBookRecord;
 import com.bookmate.bookmate.review.entity.Review;
+import com.bookmate.bookmate.user.entity.User;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -23,17 +26,17 @@ public class ReviewRequestDto {
   private String content;
 
   @NotNull
-  private String isbn;
+  private Long bookId;
 
   @Min(0)
   @Max(5)
   private Integer rating;
 
-  public Review toEntity() {
+  public Review toEntity(UserBookRecord userBookRecord) {
     return Review.builder()
         .title(this.title)
         .content(this.content)
-        .isbn(this.isbn)
+        .userBookRecord(userBookRecord)
         .rating(this.rating)
         .build();
   }
