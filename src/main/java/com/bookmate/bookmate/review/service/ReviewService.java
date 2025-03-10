@@ -10,8 +10,8 @@ import com.bookmate.bookmate.review.dto.ReviewRequestDto;
 import com.bookmate.bookmate.review.dto.ReviewUpdateRequestDto;
 import com.bookmate.bookmate.review.entity.Review;
 import com.bookmate.bookmate.review.exception.ReviewDuplicateException;
+import com.bookmate.bookmate.review.exception.ReviewForbiddenException;
 import com.bookmate.bookmate.review.exception.ReviewNotFoundException;
-import com.bookmate.bookmate.review.exception.UnauthorizedReviewException;
 import com.bookmate.bookmate.review.repository.ReviewRepository;
 import com.bookmate.bookmate.user.entity.User;
 import com.bookmate.bookmate.user.exception.UserNotFoundException;
@@ -64,7 +64,7 @@ public class ReviewService {
     Review review = findReviewById(id);
 
     if (review.getUserBookRecord().getUser() != user) {
-      throw new UnauthorizedReviewException(ErrorCode.REVIEW_UPDATE_DENIED);
+      throw new ReviewForbiddenException(ErrorCode.REVIEW_UPDATE_DENIED);
     }
 
     return review.update(reviewUpdateRequestDto);
@@ -76,7 +76,7 @@ public class ReviewService {
     Review review = findReviewById(id);
 
     if (review.getUserBookRecord().getUser() != user) {
-      throw new UnauthorizedReviewException(ErrorCode.REVIEW_DELETE_DENIED);
+      throw new ReviewForbiddenException(ErrorCode.REVIEW_DELETE_DENIED);
     }
 
     review.softDelete();

@@ -5,9 +5,9 @@ import com.bookmate.bookmate.post.dto.PostRequestDto;
 import com.bookmate.bookmate.post.dto.PostUpdateRequestDto;
 import com.bookmate.bookmate.post.entity.Post;
 import com.bookmate.bookmate.post.entity.enums.PostCategory;
+import com.bookmate.bookmate.post.exception.PostForbiddenException;
 import com.bookmate.bookmate.post.exception.PostNotFoundException;
 import com.bookmate.bookmate.post.repository.PostRepository;
-import com.bookmate.bookmate.review.exception.UnauthorizedReviewException;
 import com.bookmate.bookmate.user.entity.User;
 import com.bookmate.bookmate.user.exception.UserNotFoundException;
 import com.bookmate.bookmate.user.repository.UserRepository;
@@ -50,7 +50,7 @@ public class PostService {
     Post post = findPostById(postId);
 
     if (post.getUser() != user) {
-      throw new UnauthorizedReviewException(ErrorCode.POST_UPDATE_DENIED);
+      throw new PostForbiddenException(ErrorCode.POST_UPDATE_DENIED);
     }
 
     return post.updatePost(postUpdateRequestDto);
@@ -62,7 +62,7 @@ public class PostService {
     Post post = findPostById(postId);
 
     if (post.getUser() != user) {
-      throw new UnauthorizedReviewException(ErrorCode.POST_DELETE_DENIED);
+      throw new PostForbiddenException(ErrorCode.POST_DELETE_DENIED);
     }
 
     postRepository.delete(post);
