@@ -40,6 +40,10 @@ public enum ErrorCode {
   POST_NOT_FOUND("P-001", "Post Not Found"),
   POST_UPDATE_DENIED("P-002", "You do not have permission to update this post"),
   POST_DELETE_DENIED("P-003", "You do not have permission to delete this post"),
+
+  // Like
+  LIKE_NOT_FOUND("L-001", "Like Not Found"),
+  DUPLICATE_LIKE("L-002", "Duplicate Like"),
   ;
 
   private final String code;
