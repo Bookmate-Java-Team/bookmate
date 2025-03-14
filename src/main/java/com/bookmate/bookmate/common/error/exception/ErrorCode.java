@@ -50,6 +50,20 @@ public enum ErrorCode {
   COMMENT_DEPTH_LIMIT_EXCEEDED("COMMENT-002", "Comment Depth Limit Exceeded"),
   COMMENT_UPDATE_DENIED("COMMENT-003", "You do not have permission to update this comment"),
   COMMENT_DELETE_DENIED("COMMENT-004", "You do not have permission to delete this comment"),
+
+  // ReadingClub
+  READING_CLUB_NOT_FOUND("RC-001", "Reading Club Not Found"),
+  READING_CLUB_UPDATE_DENIED("RC-002", "You do not have permission to update this post"),
+  READING_CLUB_DELETE_DENIED("RC-003", "You do not have permission to delete this post"),
+  READING_CLUB_DUPLICATE_JOIN("RC-004", "Duplicate join"),
+  READING_CLUB_NOT_JOINED("RC-005", "ReadingClub not joined"),
+  READING_CLUB_FULL("RC-006", "ReadingClub full"),
+  READING_CLUB_INVALID_STATUS("RC-007", "ReadingClub invalid status"),
+
+  // Chat
+  CHAT_ROOM_NOT_FOUND("CH-001", "채팅방을 찾을 수 없습니다."),
+  MESSAGE_NOT_FOUND("CH-002", "메시지를 찾을 수 없습니다."),
+  PARTICIPANT_NOT_FOUND("CH-003", "채팅 참여자를 찾을 수 없습니다."),
   ;
 
   private final String code;
