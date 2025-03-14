@@ -41,16 +41,6 @@ public enum ErrorCode {
   POST_UPDATE_DENIED("P-002", "You do not have permission to update this post"),
   POST_DELETE_DENIED("P-003", "You do not have permission to delete this post"),
 
-  // Like
-  LIKE_NOT_FOUND("L-001", "Like Not Found"),
-  DUPLICATE_LIKE("L-002", "Duplicate Like"),
-
-  // Comment
-  COMMENT_NOT_FOUND("COMMENT-001", "Comment Not Found"),
-  COMMENT_DEPTH_LIMIT_EXCEEDED("COMMENT-002", "Comment Depth Limit Exceeded"),
-  COMMENT_UPDATE_DENIED("COMMENT-003", "You do not have permission to update this comment"),
-  COMMENT_DELETE_DENIED("COMMENT-004", "You do not have permission to delete this comment"),
-
   // ReadingClub
   READING_CLUB_NOT_FOUND("RC-001", "Reading Club Not Found"),
   READING_CLUB_UPDATE_DENIED("RC-002", "You do not have permission to update this post"),
