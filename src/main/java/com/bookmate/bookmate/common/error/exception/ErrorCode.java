@@ -51,7 +51,6 @@ public enum ErrorCode {
   COMMENT_UPDATE_DENIED("COMMENT-003", "You do not have permission to update this comment"),
   COMMENT_DELETE_DENIED("COMMENT-004", "You do not have permission to delete this comment"),
 
-
   // ReadingClub
   READING_CLUB_NOT_FOUND("RC-001", "Reading Club Not Found"),
   READING_CLUB_UPDATE_DENIED("RC-002", "You do not have permission to update this post"),
