@@ -54,6 +54,16 @@ public enum ErrorCode {
   CHAT_ROOM_NOT_FOUND("CH-001", "채팅방을 찾을 수 없습니다."),
   MESSAGE_NOT_FOUND("CH-002", "메시지를 찾을 수 없습니다."),
   PARTICIPANT_NOT_FOUND("CH-003", "채팅 참여자를 찾을 수 없습니다."),
+
+  // Like
+  LIKE_NOT_FOUND("L-001", "Like Not Found"),
+  DUPLICATE_LIKE("L-002", "Duplicate Like"),
+
+  // Comment
+  COMMENT_NOT_FOUND("COMMENT-001", "Comment Not Found"),
+  COMMENT_DEPTH_LIMIT_EXCEEDED("COMMENT-002", "Comment Depth Limit Exceeded"),
+  COMMENT_UPDATE_DENIED("COMMENT-003", "You do not have permission to update this comment"),
+  COMMENT_DELETE_DENIED("COMMENT-004", "You do not have permission to delete this comment"),
   ;
 
   private final String code;
