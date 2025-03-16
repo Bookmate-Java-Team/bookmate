@@ -1,11 +1,11 @@
 package com.bookmate.bookmate.like.service;
 
 import com.bookmate.bookmate.like.dto.LikeRequestDto;
-import com.bookmate.bookmate.like.entity.Like;
 import com.bookmate.bookmate.like.entity.enums.TargetType;
 import com.bookmate.bookmate.like.exception.LikeDuplicateException;
 import com.bookmate.bookmate.like.exception.LikeNotFoundException;
 import com.bookmate.bookmate.like.repository.LikeRepository;
+import com.bookmate.bookmate.post.repository.PostRepository;
 import com.bookmate.bookmate.user.entity.User;
 import com.bookmate.bookmate.user.exception.UserNotFoundException;
 import com.bookmate.bookmate.user.repository.UserRepository;
@@ -20,30 +20,35 @@ public class LikeService {
 
   private final LikeRepository likeRepository;
   private final UserRepository userRepository;
+  private final RedisLikeService redisLikeService;
 
-  @Transactional
-  public Like addLike(Long userId, @Valid LikeRequestDto likeRequestDto) {
+  public String addLike(Long userId, LikeRequestDto likeRequestDto) {
     User user = findUserById(userId);
+    TargetType targetType = likeRequestDto.getTargetType();
+    Long targetId = likeRequestDto.getTargetId();
 
-    if (likeRepository.existsByUserAndTargetIdAndTargetType(user,
-        likeRequestDto.getTargetId(), likeRequestDto.getTargetType())) {
+    if (redisLikeService.hasLiked(userId, targetType, targetId)) {
       throw new LikeDuplicateException("userId: " + userId);
     }
 
-    return likeRepository.save(Like.builder().user(user).targetId(likeRequestDto.getTargetId())
-        .targetType(likeRequestDto.getTargetType()).build());
+    redisLikeService.addLike(userId, targetType, targetId);
+
+    return "userId: " + userId + ", targetId: " + targetId + ", type: " + targetType;
   }
 
 
   @Transactional
   public void deleteLike(Long userId, @Valid LikeRequestDto likeRequestDto) {
     User user = findUserById(userId);
+    TargetType targetType = likeRequestDto.getTargetType();
+    Long targetId = likeRequestDto.getTargetId();
 
-    Like like = likeRepository.findByUserAndTargetIdAndTargetType(user,
-            likeRequestDto.getTargetId(), likeRequestDto.getTargetType())
-        .orElseThrow(() -> new LikeNotFoundException("userId: " + userId));
+    if (redisLikeService.hasLiked(userId, targetType, targetId)) {
+      redisLikeService.deleteLike(userId, targetType, targetId);
+    } else {
+      throw new LikeNotFoundException("userId: " + userId);
+    }
 
-    likeRepository.delete(like);
   }
 
   @Transactional(readOnly = true)

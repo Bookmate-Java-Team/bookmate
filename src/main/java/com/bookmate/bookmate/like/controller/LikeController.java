@@ -24,12 +24,12 @@ public class LikeController {
   private final LikeService likeService;
 
   @PostMapping
-  public ResponseEntity<LikeResponseDto> addLike(
+  public ResponseEntity<String> addLike(
       @AuthenticationPrincipal CustomUserDetails customUserDetails,
       @Valid LikeRequestDto likeRequestDto) {
     Long userId = customUserDetails.getUser().getId();
     return ResponseEntity.ok(
-        LikeResponseDto.toDto(likeService.addLike(userId, likeRequestDto), userId));
+        likeService.addLike(userId, likeRequestDto));
   }
 
   @DeleteMapping

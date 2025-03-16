@@ -65,6 +65,9 @@ public class Post {
   @Column(name = "current_participants")
   private Integer currentParticipants;
 
+  @Column(name = "total_likes")
+  private Integer totalLikes = 0;
+
   @Column(updatable = false)
   @CreatedDate
   private LocalDateTime createdAt;
@@ -81,4 +84,9 @@ public class Post {
     }
     return this;
   }
+
+  public void addTotalLikes(Integer totalLikes) {
+    this.totalLikes += totalLikes;
+  }
+
 }
