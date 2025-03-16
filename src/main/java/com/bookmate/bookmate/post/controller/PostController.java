@@ -71,9 +71,10 @@ public class PostController {
   @GetMapping
   public ResponseEntity<Page<PostResponseDto>> getAllPosts(
       @RequestParam(value = "page", defaultValue = "0") int page,
-      @RequestParam(value = "size", defaultValue = "10") int size
+      @RequestParam(value = "size", defaultValue = "10") int size,
+      @RequestParam(value = "sort", defaultValue = "createdAt") String sortBy
   ) {
-    Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+     Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy).descending());
 
     return ResponseEntity.ok(postService.getAllPosts(pageable).map(PostResponseDto::toDto));
   }
