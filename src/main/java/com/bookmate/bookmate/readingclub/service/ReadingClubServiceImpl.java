@@ -47,6 +47,7 @@ public class ReadingClubServiceImpl implements ReadingClubService {
     ReadingClubUser hostJoin = ReadingClubUser.builder()
         .readingClub(saved)
         .user(host)
+        .status(ReadingClubUserStatus.ACCEPTED)
         .build();
     readingClubUserRepository.save(hostJoin);
 
@@ -81,6 +82,7 @@ public class ReadingClubServiceImpl implements ReadingClubService {
     // todo: 해당 ChatRoom 삭제
     // charService.deleteGroupChatRoom(club);
 
+    readingClubUserRepository.deleteByReadingClub(club);
     readingClubRepository.delete(club);
   }
 

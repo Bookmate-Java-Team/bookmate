@@ -43,8 +43,8 @@ public enum ErrorCode {
 
   // ReadingClub
   READING_CLUB_NOT_FOUND("RC-001", "Reading Club Not Found"),
-  READING_CLUB_UPDATE_DENIED("RC-002", "You do not have permission to update this post"),
-  READING_CLUB_DELETE_DENIED("RC-003", "You do not have permission to delete this post"),
+  READING_CLUB_UPDATE_DENIED("RC-002", "You do not have permission to update this reading club"),
+  READING_CLUB_DELETE_DENIED("RC-003", "You do not have permission to delete this reading club"),
   READING_CLUB_DUPLICATE_JOIN("RC-004", "Duplicate join"),
   READING_CLUB_NOT_JOINED("RC-005", "ReadingClub not joined"),
   READING_CLUB_FULL("RC-006", "ReadingClub full"),
