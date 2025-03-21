@@ -44,6 +44,7 @@ public class ReadingClubJoinServiceImpl implements ReadingClubJoinService {
     ReadingClubUser record = ReadingClubUser.builder()
         .readingClub(club)
         .user(user)
+        .status(ReadingClubUserStatus.PENDING)
         .build();
     readingClubUserRepository.save(record);
   }
@@ -71,6 +72,8 @@ public class ReadingClubJoinServiceImpl implements ReadingClubJoinService {
     }
 
     rcu.accept();
+
+    // todo: 해당 독서모임 그룹채팅 초대
   }
 
   // 독서모임 가입 거절

@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -37,4 +38,8 @@ public interface ReadingClubUserRepository extends JpaRepository<ReadingClubUser
            AND rcu.status = :status
         """)
   Page<ReadingClubUser> findByReadingClubAndStatus(ReadingClub club, ReadingClubUserStatus status, Pageable pageable);
+
+  @Modifying
+  @Query("DELETE FROM ReadingClubUser rcu WHERE rcu.readingClub = :readingClub")
+  void deleteByReadingClub(ReadingClub readingClub);
 }
