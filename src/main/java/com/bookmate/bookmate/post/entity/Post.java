@@ -89,4 +89,7 @@ public class Post {
     this.totalLikes += totalLikes;
   }
 
+  public void decreaseTotalLikes(Integer totalLikes) {
+    this.totalLikes -= totalLikes;
+  }
 }

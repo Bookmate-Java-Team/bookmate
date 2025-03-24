@@ -38,42 +38,66 @@ public class LikeSyncScheduler {
   public void syncLikesToDatabase() {
     log.info("Start sync likes");
 
-    Set<String> keys = redisTemplate.keys("likes:*");
-    if (keys == null || keys.isEmpty()) {
-      return;
-    }
+    Set<String> likeKeys = redisTemplate.keys("likes:*");
+    Set<String> cancelKeys = redisTemplate.keys("likes_cancel:*");
 
-    List<String> keysToDelete = new ArrayList<>();
+    ArrayList<String> keysToDelete = new ArrayList<>();
 
-    for (String key : keys) {
-      TargetType targetType = TargetType.valueOf(key.split(":")[1].toUpperCase());
-      Long targetId = Long.valueOf(key.split(":")[2]);
+    // Redis에서 좋아요 기록 처리
+    if (likeKeys != null && !likeKeys.isEmpty()) {
 
-      Set<String> likedUsers = redisLikeService.getLikedUsers(targetType, targetId);
+      for (String key : likeKeys) {
+        TargetType targetType = TargetType.valueOf(key.split(":")[1].toUpperCase());
+        Long targetId = Long.valueOf(key.split(":")[2]);
 
-      List<Like> newLikes = likedUsers.stream()
-          .map(userId -> Like.builder()
-              .user(findUserById(Long.valueOf(userId)))
-              .targetType(targetType)
-              .targetId(targetId)
-              .build())
-          .collect(Collectors.toList());
+        Set<String> likedUsers = redisLikeService.getLikedUsers(targetType, targetId);
+        List<Like> newLikes = likedUsers.stream()
+            .map(userId -> Like.builder()
+                .user(findUserById(Long.valueOf(userId)))
+                .targetType(targetType)
+                .targetId(targetId)
+                .build())
+            .collect(Collectors.toList());
 
-      likeRepository.saveAll(newLikes);
+        likeRepository.saveAll(newLikes);
 
-      // post의 totalLikes update
-      if (targetType.equals(TargetType.POST)) {
-        Post post = findPostById(targetId);
-        post.addTotalLikes(likedUsers.size());
+        // 게시물의 totalLikes 업데이트
+        if (targetType.equals(TargetType.POST)) {
+          Post post = findPostById(targetId);
+          post.addTotalLikes(likedUsers.size());
+        }
+
+        // Redis에서 처리된 좋아요 키 삭제
+        keysToDelete.add(key);
       }
-
-      keysToDelete.add(key);
     }
 
+    // Redis에서 취소된 좋아요 기록 처리
+    if (cancelKeys != null && !cancelKeys.isEmpty()) {
+
+      for (String cancelKey : cancelKeys) {
+        TargetType targetType = TargetType.valueOf(cancelKey.split(":")[1].toUpperCase());
+        Long targetId = Long.valueOf(cancelKey.split(":")[2]);
+
+        Set<String> likedCancelUsers = redisLikeService.getCancelLikedUsers(targetType, targetId);
+        likedCancelUsers.forEach(userId -> likeRepository.deleteAllByUserAndTargetTypeAndTargetId(
+            findUserById(Long.valueOf(userId)), targetType, targetId));
+
+        // 게시물의 totalLikes 업데이트 (취소된 좋아요)
+        if (targetType.equals(TargetType.POST)) {
+          Post post = findPostById(targetId);
+          post.decreaseTotalLikes(likedCancelUsers.size());
+        }
+
+        // Redis에서 처리된 취소된 좋아요 키 삭제
+        keysToDelete.add(cancelKey);
+      }
+    }
     // 데이터 손실을 방지하기 위해 트랜잭션이 성공한 후 일괄 삭제
     keysToDelete.forEach(key -> redisTemplate.delete(key));
     log.info("Finish sync likes");
   }
+
 
   private User findUserById(Long id) {
     return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
