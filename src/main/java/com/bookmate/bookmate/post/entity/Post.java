@@ -65,6 +65,9 @@ public class Post {
   @Column(name = "current_participants")
   private Integer currentParticipants;
 
+  @Column(name = "total_likes")
+  private Integer totalLikes = 0;
+
   @Column(updatable = false)
   @CreatedDate
   private LocalDateTime createdAt;
@@ -80,5 +83,13 @@ public class Post {
       this.content = postUpdateRequestDto.getContent();
     }
     return this;
+  }
+
+  public void addTotalLikes(Integer totalLikes) {
+    this.totalLikes += totalLikes;
+  }
+
+  public void decreaseTotalLikes(Integer totalLikes) {
+    this.totalLikes -= totalLikes;
   }
 }
