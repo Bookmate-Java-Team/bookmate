@@ -33,3 +33,9 @@ jwt:
 
 aladin:
   api-key: ${ALADIN_API_KEY}
+
+openai:
+  model: ${OPENAI_MODEL}
+  api:
+    key: ${OPENAI_API_KEY}
+    url: ${OPENAI_URL}
