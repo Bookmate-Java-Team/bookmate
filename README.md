@@ -27,6 +27,7 @@
     <img src="https://img.shields.io/badge/spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white"> 
     <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white"> 
     <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white">
+<img src="https://img.shields.io/badge/-OpenAI-%2300BFFF?style=for-the-badge&logo=openai&logoColor=white">
     <br>
     <img src="https://img.shields.io/badge/jwt-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white">
     <img src="https://img.shields.io/badge/redis-%23DD0031.svg?style=for-the-badge&logo=redis&logoColor=white">
@@ -87,8 +88,10 @@ src
     - 로그인 후 모든 서비스 이용 가능
     - 회원 정보 조회/수정/탈퇴
 - 도서 검색
-    - 알라딘 API
+    - 알라딘 API와 연동하여 쿼리 검색 및 베스트 셀러 검색 가능
 - 도서 리뷰
+  - 도서를 저장하고 해당 도서에 대한 리뷰 작성 가능
+  - 도서마다 작성된 리뷰를 조회 가능
 - 독서 모임
     - 한 유저가 한 개의 독서모임만 개설 가능
     - 독서 모임 생성/수정/삭제 (개설자만 허용)
@@ -105,11 +108,15 @@ src
 - 게시글
     - 자유 게시글, 독서 토론 게시글, 독서 모임 모집 게시글 카테고리로 나누어져 있음
     - 독서 모임 모집 게시글의 경우 모집 기간, 모집 인원 수, 현재 신청된 인원 수 확인 가능
-    - 좋아요
+    - 좋아요 순으로 게시글 정렬 가능
     - AI 보정 기능
+- 좋아요
+    - 게시글과 댓글에 좋아요 기능 추가
+    - 토글 방식으로 구현
 - 댓글
-    - 대댓글
-
+    - 대댓글을 사용하여 작성자와 소통 가능
+- 게시글 보정
+  - 작성된 게시글을 OpenAI를 통해 미리 작성된 프롬프트를 사용하여 보정 가능
 <br/>
 
 ## 💻 팀원 소개
