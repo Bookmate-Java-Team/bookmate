@@ -35,10 +35,8 @@ public class LikeService {
   }
 
   @Transactional
-  public String toggleLike(Long userId, @Valid LikeRequestDto likeRequestDto) {
+  public String toggleLike(Long userId, Long targetId, TargetType targetType) {
     User user = findUserById(userId);
-    TargetType targetType = likeRequestDto.getTargetType();
-    Long targetId = likeRequestDto.getTargetId();
 
     boolean hasLiked = redisLikeService.hasLiked(userId, targetType, targetId);
 

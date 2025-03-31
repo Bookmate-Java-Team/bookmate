@@ -18,21 +18,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/book")
+@RequestMapping("/books")
 @RequiredArgsConstructor
 public class BookController {
   private final AladinApiService aladinApiService;
   private final BookService bookService;
 
   @GetMapping("/search")
-  public ResponseEntity<List<AladinApiResponseDto>> searchBooks(@RequestParam String query, @RequestParam String startPage) {
-    List<AladinApiResponseDto> itemList = aladinApiService.searchBooks(query, startPage);
-    return ResponseEntity.ok(itemList);
-  }
-
-  @GetMapping("/search/bestseller")
-  public ResponseEntity<List<AladinApiResponseDto>> searchBestSellerBooks(@RequestParam String startPage) {
-    List<AladinApiResponseDto> itemList = aladinApiService.searchBestSellerBooks(startPage);
+  public ResponseEntity<List<AladinApiResponseDto>> searchBooks(
+      @RequestParam String query,
+      @RequestParam(value = "type", defaultValue = "Title") String type,
+      @RequestParam String startPage) {
+    List<AladinApiResponseDto> itemList = aladinApiService.searchBooks(query, type, startPage);
     return ResponseEntity.ok(itemList);
   }
 

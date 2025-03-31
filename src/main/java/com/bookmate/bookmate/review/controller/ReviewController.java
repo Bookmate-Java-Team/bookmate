@@ -23,42 +23,55 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/review")
-@ResponseBody
 public class ReviewController {
 
   private final ReviewService reviewService;
 
-  @PostMapping
-  public ResponseEntity<ReviewResponseDto> createReview(@AuthenticationPrincipal CustomUserDetails userDetails, @Valid ReviewRequestDto reviewRequestDto) {
+
+  @PostMapping("/books/{bookId}/reviews")
+  public ResponseEntity<ReviewResponseDto> createReview(
+      @AuthenticationPrincipal CustomUserDetails userDetails,
+      @PathVariable Long bookId,
+      @Valid ReviewRequestDto reviewRequestDto) {
     Long userId = userDetails.getUser().getId();
     return ResponseEntity.status(HttpStatus.CREATED)
-        .body(ReviewResponseDto.toDto(reviewService.createReview(userId, reviewRequestDto)));
+        .body(
+            ReviewResponseDto.toDto(reviewService.createReview(userId, bookId, reviewRequestDto)));
   }
 
-  @GetMapping("/{id}")
-  public ResponseEntity<ReviewResponseDto> getReview(@PathVariable Long id) {
-    return ResponseEntity.ok(ReviewResponseDto.toDto(reviewService.getReview(id)));
+  @GetMapping("reviews/{reviewId}")
+  public ResponseEntity<ReviewResponseDto> getReview(@PathVariable Long reviewId) {
+    return ResponseEntity.ok(ReviewResponseDto.toDto(reviewService.getReview(reviewId)));
   }
 
-  @GetMapping("/{isbn}/list.do")
-  public ResponseEntity<List<ReviewResponseDto>> getReviewsByIsbn(@PathVariable String isbn) {
+  /**
+   * 특정 책 리뷰들을 조회합니다.
+   *
+   * @param bookId
+   * @return 특정 책 리뷰들 ({@link ReviewResponseDto} 리스트)
+   */
+  @GetMapping("/books/{bookId}/reviews")
+  public ResponseEntity<List<ReviewResponseDto>> getReviews(@PathVariable Long bookId) {
     return ResponseEntity.ok(
-        reviewService.getReviewsByIsbn(isbn).stream().map(ReviewResponseDto::toDto).toList());
+        reviewService.getReviews(bookId).stream().map(ReviewResponseDto::toDto).toList());
   }
 
-  @PatchMapping("/{id}")
-  public ResponseEntity<ReviewResponseDto> updateReview(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long id,
+  @PatchMapping("reviews/{reviewId}")
+  public ResponseEntity<ReviewResponseDto> updateReview(
+      @AuthenticationPrincipal CustomUserDetails userDetails,
+      @PathVariable Long reviewId,
       @Valid ReviewUpdateRequestDto reviewUpdateRequestDto) {
     Long userId = userDetails.getUser().getId();
     return ResponseEntity.ok(
-        ReviewResponseDto.toDto(reviewService.updateReview(userId, id, reviewUpdateRequestDto)));
+        ReviewResponseDto.toDto(reviewService.updateReview(userId, reviewId, reviewUpdateRequestDto)));
   }
 
-  @DeleteMapping("/{id}")
-  public ResponseEntity<String> deleteReview(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long id) {
+  @DeleteMapping("reviews/{reviewId}")
+  public ResponseEntity<String> deleteReview(
+      @AuthenticationPrincipal CustomUserDetails userDetails,
+      @PathVariable Long reviewId) {
     Long userId = userDetails.getUser().getId();
-    reviewService.deleteReview(userId, id);
+    reviewService.deleteReview(userId, reviewId);
     return ResponseEntity.noContent().build();
   }
 

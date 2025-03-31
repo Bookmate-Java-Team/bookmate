@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/post")
+@RequestMapping("/posts")
 @RequiredArgsConstructor
 public class PostController {
 
@@ -74,7 +74,7 @@ public class PostController {
       @RequestParam(value = "size", defaultValue = "10") int size,
       @RequestParam(value = "sort", defaultValue = "createdAt") String sortBy
   ) {
-     Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy).descending());
+    Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy).descending());
 
     return ResponseEntity.ok(postService.getAllPosts(pageable).map(PostResponseDto::toDto));
   }

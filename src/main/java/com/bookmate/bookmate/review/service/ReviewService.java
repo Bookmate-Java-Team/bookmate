@@ -32,10 +32,10 @@ public class ReviewService {
   private final BookRepository bookRepository;
 
   @Transactional
-  public Review createReview(Long userId, ReviewRequestDto reviewRequestDto) {
+  public Review createReview(Long userId, Long bookId, ReviewRequestDto reviewRequestDto) {
     User user = findUserById(userId);
 
-    Book book = findBookById(reviewRequestDto.getBookId());
+    Book book = findBookById(bookId);
 
     UserBookRecord userBookRecord = findUserBookRecordByUserAndBook(user, book);
 
@@ -49,8 +49,8 @@ public class ReviewService {
   }
 
   @Transactional(readOnly = true)
-  public List<Review> getReviewsByIsbn(String isbn) {
-    Book book = findBookByIsbn(isbn);
+  public List<Review> getReviews(Long bookId) {
+    Book book = findBookById(bookId);
 
     List<UserBookRecord> userBookRecords = findUserBookRecordsByBook(book);
 
@@ -97,10 +97,6 @@ public class ReviewService {
 
   private Book findBookById(Long id) {
     return bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException(id));
-  }
-
-  private Book findBookByIsbn(String isbn) {
-    return bookRepository.findByIsbn(isbn).orElseThrow(() -> new BookNotFoundException(isbn));
   }
 
   private List<UserBookRecord> findUserBookRecordsByBook(Book book) {

@@ -25,9 +25,6 @@ public class ReviewRequestDto {
   @NotNull
   private String content;
 
-  @NotNull
-  private Long bookId;
-
   @Min(0)
   @Max(5)
   private Integer rating;

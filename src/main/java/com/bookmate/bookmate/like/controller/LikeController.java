@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,23 +19,27 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/like")
+@RequestMapping("/likes")
 @RequiredArgsConstructor
 public class LikeController {
 
   private final LikeService likeService;
 
-  @PostMapping("/toggle")
+  @PostMapping("/{targetType}/{targetId}/toggle")
   public ResponseEntity<String> toggleLike(
       @AuthenticationPrincipal CustomUserDetails customUserDetails,
-      @Valid LikeRequestDto likeRequestDto) {
+      @PathVariable TargetType targetType,
+      @PathVariable Long targetId
+  ) {
     Long userId = customUserDetails.getUser().getId();
-    return ResponseEntity.ok(likeService.toggleLike(userId, likeRequestDto));
+    return ResponseEntity.ok(likeService.toggleLike(userId, targetId, targetType));
   }
 
-  @GetMapping("/count")
-  public ResponseEntity<Integer> getLikeCount(@RequestParam Long targetId, @RequestParam
-  TargetType targetType) {
+  @GetMapping("/{targetType}/{targetId}/count")
+  public ResponseEntity<Integer> getLikeCount(
+      @PathVariable TargetType targetType,
+      @PathVariable Long targetId
+  ) {
     return ResponseEntity.ok(likeService.getLikeCount(targetId, targetType));
   }
 

@@ -23,24 +23,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/comment")
 @RequiredArgsConstructor
 public class CommentController {
 
   private final CommentService commentService;
 
-  @PostMapping
+  @PostMapping("/posts/{postId}/comments")
   public ResponseEntity<CommentResponseDto> addComment(
-      @AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestParam Long postId,
+      @AuthenticationPrincipal CustomUserDetails customUserDetails,
+      @PathVariable Long postId,
       @Valid CommentRequestDto commentRequestDto) {
     Long userId = customUserDetails.getUser().getId();
     return ResponseEntity.status(
         HttpStatus.CREATED).body(
-        CommentResponseDto.toDto(commentService.addComment(userId, postId, commentRequestDto)))
-        ;
+        CommentResponseDto.toDto(commentService.addComment(userId, postId, commentRequestDto)));
   }
 
-  @PatchMapping("/{commentId}")
+  @PatchMapping("comments/{commentId}")
   public ResponseEntity<CommentResponseDto> updateComment(
       @AuthenticationPrincipal CustomUserDetails customUserDetails, @PathVariable Long commentId,
       @Valid CommentRequestDto commentRequestDto) {
@@ -49,7 +48,7 @@ public class CommentController {
         commentService.updateComment(userId, commentId, commentRequestDto)));
   }
 
-  @DeleteMapping("/{commentId}")
+  @DeleteMapping("comments/{commentId}")
   public ResponseEntity<String> deleteComment(
       @AuthenticationPrincipal CustomUserDetails customUserDetails, @PathVariable Long commentId) {
     Long userId = customUserDetails.getUser().getId();
@@ -57,9 +56,9 @@ public class CommentController {
     return ResponseEntity.noContent().build();
   }
 
-  @GetMapping
+  @GetMapping("/posts/{postId}/comments")
   public ResponseEntity<Page<CommentResponseDto>> getComments(
-      @RequestParam Long postId,
+      @PathVariable Long postId,
       @RequestParam(value = "page", defaultValue = "0") int page,
       @RequestParam(value = "size", defaultValue = "10") int size) {
 
