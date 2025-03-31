@@ -76,6 +76,8 @@ public class CommentService {
     }
 
     comment.softDelete();
+
+    deleteParentIfPossibleAndChildren(comment.getParent());
   }
 
   @Transactional(readOnly = true)
@@ -116,4 +118,28 @@ public class CommentService {
       throw new CommentDepthLimitExceededException();
     }
   }
+
+  private void deleteParentIfPossibleAndChildren(Comment parentComment) {
+    if (parentComment == null) {
+      return;
+    }
+
+    if (parentComment.getDeleteAt() == null) {
+      return;
+    }
+
+    boolean allChildrenDeleted = parentComment.getChildren().stream()
+        .allMatch(child -> child.getDeleteAt() != null);
+
+    if (allChildrenDeleted) {
+
+      // 참조 무결성 제약 해결
+      // 자식 댓글 삭제
+      commentRepository.deleteChildren(parentComment.getId());
+
+      // 부모 댓글 삭제
+      commentRepository.deleteParent(parentComment.getId());
+    }
+  }
+
 }

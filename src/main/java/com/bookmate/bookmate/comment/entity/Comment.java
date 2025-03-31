@@ -71,9 +71,6 @@ public class Comment {
 
   public void softDelete() {
     this.deleteAt = LocalDateTime.now();
-    for (Comment child: children) {
-      child.softDelete();
-    }
   }
 
   public Comment update(CommentRequestDto commentRequestDto) {
