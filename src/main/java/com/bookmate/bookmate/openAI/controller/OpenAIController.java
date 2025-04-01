@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 @RestController
-@RequestMapping("/openai")
+@RequestMapping("/api/openai")
 @RequiredArgsConstructor
 public class OpenAIController {
 

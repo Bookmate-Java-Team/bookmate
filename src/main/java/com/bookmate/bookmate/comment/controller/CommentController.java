@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class CommentController {
 
@@ -39,7 +40,7 @@ public class CommentController {
         CommentResponseDto.toDto(commentService.addComment(userId, postId, commentRequestDto)));
   }
 
-  @PatchMapping("comments/{commentId}")
+  @PatchMapping("/comments/{commentId}")
   public ResponseEntity<CommentResponseDto> updateComment(
       @AuthenticationPrincipal CustomUserDetails customUserDetails, @PathVariable Long commentId,
       @Valid CommentRequestDto commentRequestDto) {
@@ -48,7 +49,7 @@ public class CommentController {
         commentService.updateComment(userId, commentId, commentRequestDto)));
   }
 
-  @DeleteMapping("comments/{commentId}")
+  @DeleteMapping("/comments/{commentId}")
   public ResponseEntity<String> deleteComment(
       @AuthenticationPrincipal CustomUserDetails customUserDetails, @PathVariable Long commentId) {
     Long userId = customUserDetails.getUser().getId();
@@ -60,7 +61,8 @@ public class CommentController {
   public ResponseEntity<Page<CommentResponseDto>> getComments(
       @PathVariable Long postId,
       @RequestParam(value = "page", defaultValue = "0") int page,
-      @RequestParam(value = "size", defaultValue = "10") int size) {
+      @RequestParam(value = "size", defaultValue = "10") int size
+  ) {
 
     Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").ascending());
 

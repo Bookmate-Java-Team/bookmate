@@ -74,8 +74,8 @@ public class PostService {
   }
 
   @Transactional(readOnly = true)
-  public Page<Post> getAllPosts(Pageable pageable) {
-    return postRepository.findAll(pageable);
+  public Page<Post> getAllPosts(PostCategory category, Pageable pageable) {
+    return postRepository.findAllByCategory(category, pageable);
   }
 
 
