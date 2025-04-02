@@ -46,10 +46,6 @@ public class RedisLikeService {
     return String.format(LIKE_KEY_PATTERN, targetType.toString().toLowerCase(), targetId);
   }
 
-  public String getCountKey(TargetType targetType, Long targetId) {
-    return String.format(LIKE_COUNT_KEY_PATTERN, targetType.toString().toLowerCase(), targetId);
-  }
-
   public String getCancelKey(TargetType targetType, Long targetId) {
     return String.format(LIKE_CANCEL_PATTERN, targetType.toString().toLowerCase(), targetId);
   }

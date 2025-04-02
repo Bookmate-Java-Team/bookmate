@@ -28,16 +28,16 @@ public class PostService {
   @Transactional
   public Post createPost(Long userId, @Valid PostRequestDto postRequestDto) {
     User user = findUserById(userId);
-    Post post;
+    Post post = Post.builder().title(postRequestDto.getTitle()).content(postRequestDto.getContent())
+        .category(postRequestDto.getCategory()).user(user).totalLikes(0).build();
     if (isRecruitmentValid(postRequestDto)) {
-      post = postRepository.save(
-          Post.builder().title(postRequestDto.getTitle()).content(postRequestDto.getContent())
-              .category(postRequestDto.getCategory()).user(user).build());
+      post = postRepository.save(post);
     } else {
-      post = postRepository.save(
-          Post.builder().title(postRequestDto.getTitle()).content(postRequestDto.getContent())
-              .category(postRequestDto.getCategory()).user(user)
-              .recruitStartDate(postRequestDto.getRecruitStartDate()).build());
+      post.setRecruitStartDate(postRequestDto.getRecruitStartDate());
+      post.setRecruitEndDate(postRequestDto.getRecruitEndDate());
+      post.setCapacity(postRequestDto.getCapacity());
+      post.setCurrentParticipants(postRequestDto.getCurrentParticipants());
+      post = postRepository.save(post);
     }
 
     return post;

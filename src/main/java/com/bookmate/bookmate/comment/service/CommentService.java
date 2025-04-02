@@ -59,7 +59,7 @@ public class CommentService {
     Comment comment = findCommentById(commentId);
 
     if (comment.getUser() != user) {
-      throw new CommentForbiddenException(ErrorCode.REVIEW_UPDATE_DENIED);
+      throw new CommentForbiddenException(ErrorCode.COMMENT_UPDATE_DENIED);
     }
 
     return comment.update(commentRequestDto);
@@ -72,7 +72,7 @@ public class CommentService {
     Comment comment = findCommentById(commentId);
 
     if (comment.getUser() != user) {
-      throw new CommentForbiddenException(ErrorCode.REVIEW_DELETE_DENIED);
+      throw new CommentForbiddenException(ErrorCode.COMMENT_DELETE_DENIED);
     }
 
     comment.softDelete();

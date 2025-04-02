@@ -9,6 +9,11 @@ import com.bookmate.bookmate.user.dto.request.UpdateUserRequestDto;
 import com.bookmate.bookmate.user.dto.response.TokenResponseDto;
 import com.bookmate.bookmate.user.dto.response.UserResponseDto;
 import com.bookmate.bookmate.user.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -32,6 +37,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
+@Tag(name = "User API", description = "회원 관련 API")
 public class UserController {
 
   private final UserService userService;
@@ -71,6 +77,8 @@ public class UserController {
    * @return 가입된 사용자 정보
    */
   @PostMapping("/register")
+  @Operation(summary = "회원 가입", description = "회원을 등록합니다.")
+  @ApiResponse(responseCode = "200", description = "회원 가입 성공", content = @Content(schema = @Schema(implementation = UserResponseDto.class)))
   public ResponseEntity<UserResponseDto> registerUser(
       @RequestBody @Valid RegisterRequestDto dto
   ) {
@@ -85,6 +93,8 @@ public class UserController {
    * @return 액세스 토큰, 리프레시 토큰
    */
   @PostMapping("/login")
+  @Operation(summary = "로그인", description = "아이디와 비밀번호를 입력하면 JWT를 발급받습니다.")
+  @ApiResponse(responseCode = "200", description = "로그인 성공", content = @Content(schema = @Schema(implementation = TokenResponseDto.class)))
   public ResponseEntity<TokenResponseDto> login(
       @RequestBody @Valid LoginRequestDto dto
   ) {
@@ -195,6 +205,7 @@ public class UserController {
    * @return 새 액세스 토큰, 리프레시 토큰
    */
   @PostMapping("/refresh-token")
+  @Operation(summary = "토큰 재발급", description = "Refresh Token을 이용해 새로운 Access Token을 발급받습니다.")
   public ResponseEntity<TokenResponseDto> reissueTokens(
       @RequestHeader("Authorization") String accessToken,
       @RequestHeader("Refresh-Token") String refreshToken

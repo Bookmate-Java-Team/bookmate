@@ -49,6 +49,7 @@ public class LikeSyncScheduler {
       for (String key : likeKeys) {
         TargetType targetType = TargetType.valueOf(key.split(":")[1].toUpperCase());
         Long targetId = Long.valueOf(key.split(":")[2]);
+        System.out.println(targetType + " " + targetId);
 
         Set<String> likedUsers = redisLikeService.getLikedUsers(targetType, targetId);
         List<Like> newLikes = likedUsers.stream()
