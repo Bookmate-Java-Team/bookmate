@@ -19,6 +19,9 @@ import com.bookmate.bookmate.user.repository.UserRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,10 +35,10 @@ public class ReviewService {
   private final BookRepository bookRepository;
 
   @Transactional
-  public Review createReview(Long userId, ReviewRequestDto reviewRequestDto) {
+  public Review createReview(Long userId, Long bookId, ReviewRequestDto reviewRequestDto) {
     User user = findUserById(userId);
 
-    Book book = findBookById(reviewRequestDto.getBookId());
+    Book book = findBookById(bookId);
 
     UserBookRecord userBookRecord = findUserBookRecordByUserAndBook(user, book);
 
@@ -49,13 +52,15 @@ public class ReviewService {
   }
 
   @Transactional(readOnly = true)
-  public List<Review> getReviewsByIsbn(String isbn) {
-    Book book = findBookByIsbn(isbn);
+  public Page<Review> getReviews(Long bookId, Pageable pageable) {
+    Book book = findBookById(bookId);
 
-    List<UserBookRecord> userBookRecords = findUserBookRecordsByBook(book);
+    Page<UserBookRecord> userBookRecords = findUserBookRecordsByBook(book, pageable);
 
-    return userBookRecords.stream().map(this::findReviewByUserBookRecord)
+    List<Review> reviews = userBookRecords.stream().map(this::findReviewByUserBookRecord)
         .collect(Collectors.toList());
+
+    return new PageImpl<>(reviews, pageable, userBookRecords.getTotalElements());
   }
 
   @Transactional
@@ -99,12 +104,8 @@ public class ReviewService {
     return bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException(id));
   }
 
-  private Book findBookByIsbn(String isbn) {
-    return bookRepository.findByIsbn(isbn).orElseThrow(() -> new BookNotFoundException(isbn));
-  }
-
-  private List<UserBookRecord> findUserBookRecordsByBook(Book book) {
-    return userBookRecordRepository.findAllByBook(book)
+  private Page<UserBookRecord> findUserBookRecordsByBook(Book book, Pageable pageable) {
+    return userBookRecordRepository.findAllByBook(book, pageable)
         .orElseThrow(() -> new ReviewNotFoundException(book.getIsbn()));
   }
 

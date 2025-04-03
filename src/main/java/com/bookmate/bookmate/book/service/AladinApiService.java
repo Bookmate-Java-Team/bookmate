@@ -27,29 +27,22 @@ public class AladinApiService {
    * 알라딘 API를 통해 도서를 검색합니다.
    *
    * @param query     사용자가 검색한 도서 제목(혹은 키워드)
+   * @param type      사용자가 원하는 조회 방식(default = Title, Bestseller)
    * @param startPage 검색 시작 페이지
    * @return 검색된 도서 목록 ({@link AladinApiResponseDto} 리스트)
    */
-  public List<AladinApiResponseDto> searchBooks(String query, String startPage) {
+  public List<AladinApiResponseDto> searchBooks(String query, String type, String startPage) {
     String API_URL = "https://www.aladin.co.kr/ttb/api/ItemSearch.aspx";
-    String url = String.format(
-        "%s?ttbkey=%s&Query=%s&QueryType=Title&MaxResults=8&start=%s&output=js&Version=20131101",
-        API_URL, API_KEY, query, startPage);
-
-    return callAladinApi(url);
-  }
-
-  /**
-   * 알라딘 API를 통해 베스트셀러 도서를 검색합니다.
-   *
-   * @param startPage 검색 시작 페이지
-   * @return 베스트셀러 도서 목록 ({@link AladinApiResponseDto} 리스트)
-   */
-  public List<AladinApiResponseDto> searchBestSellerBooks(String startPage) {
-    String url = String.format(
-        "https://www.aladin.co.kr/ttb/api/ItemList.aspx?ttbkey=%s&QueryType=Bestseller&MaxResults=8&start=%s&SearchTarget=Book&output=js&Version=20131101",
-        API_KEY, startPage);
-
+    String url;
+    if (type.equals("Bestseller")) {
+      url = String.format(
+          "https://www.aladin.co.kr/ttb/api/ItemList.aspx?ttbkey=%s&QueryType=Bestseller&MaxResults=8&start=%s&SearchTarget=Book&output=js&Version=20131101",
+          API_KEY, startPage);
+    } else {
+      url = String.format(
+          "%s?ttbkey=%s&Query=%s&QueryType=Title&MaxResults=8&start=%s&output=js&Version=20131101",
+          API_URL, API_KEY, query, startPage);
+    }
     return callAladinApi(url);
   }
 
