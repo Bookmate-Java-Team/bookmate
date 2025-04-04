@@ -18,6 +18,7 @@ import com.bookmate.bookmate.readingclub.repository.ReadingClubRepository;
 import com.bookmate.bookmate.user.entity.User;
 import com.bookmate.bookmate.user.exception.UserNotFoundException;
 import com.bookmate.bookmate.user.repository.UserRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -123,6 +124,8 @@ public class ChatServiceImpl implements ChatService {
   public void deleteChatRoomByReadingClub(Long readingClubId) {
     ChatRoom chatRoom = chatRoomRepository.findByReadingClubId(readingClubId);
     if (chatRoom != null) {
+      List<ChatParticipant> participants = chatParticipantRepository.findByChatRoom(chatRoom);
+      chatParticipantRepository.deleteAll(participants);
       chatRoomRepository.delete(chatRoom);
     }
   }
