@@ -1,5 +1,6 @@
 package com.bookmate.bookmate.readingclub.service;
 
+import com.bookmate.bookmate.chat.service.ChatService;
 import com.bookmate.bookmate.common.error.exception.ErrorCode;
 import com.bookmate.bookmate.readingclub.entity.ReadingClub;
 import com.bookmate.bookmate.readingclub.entity.ReadingClubUser;
@@ -24,6 +25,7 @@ public class ReadingClubJoinServiceImpl implements ReadingClubJoinService {
   private final ReadingClubRepository readingClubRepository;
   private final ReadingClubUserRepository readingClubUserRepository;
   private final UserRepository userRepository;
+  private final ChatService chatService;
 
   // 독서모임 가입 신청
   @Override
@@ -73,7 +75,8 @@ public class ReadingClubJoinServiceImpl implements ReadingClubJoinService {
 
     rcu.accept();
 
-    // todo: 해당 독서모임 그룹채팅 초대
+    // 해당 독서모임 그룹채팅 초대
+    chatService.inviteChatRoom(readingClubId, targetUser);
   }
 
   // 독서모임 가입 거절
