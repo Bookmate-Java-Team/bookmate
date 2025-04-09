@@ -1,5 +1,7 @@
 package com.bookmate.bookmate.readingclub.service;
 
+import com.bookmate.bookmate.chat.dto.request.CreateChatRoomRequestDto;
+import com.bookmate.bookmate.chat.service.ChatService;
 import com.bookmate.bookmate.common.error.exception.ErrorCode;
 import com.bookmate.bookmate.readingclub.dto.request.ReadingClubRequestDto;
 import com.bookmate.bookmate.readingclub.dto.response.ReadingClubResponseDto;
@@ -11,6 +13,7 @@ import com.bookmate.bookmate.readingclub.exception.ReadingClubForbiddenException
 import com.bookmate.bookmate.readingclub.exception.ReadingClubNotFoundException;
 import com.bookmate.bookmate.readingclub.repository.ReadingClubRepository;
 import com.bookmate.bookmate.readingclub.repository.ReadingClubUserRepository;
+import com.bookmate.bookmate.user.dto.response.UserResponseDto;
 import com.bookmate.bookmate.user.entity.User;
 import com.bookmate.bookmate.user.exception.UserNotFoundException;
 import com.bookmate.bookmate.user.repository.UserRepository;
@@ -28,6 +31,7 @@ public class ReadingClubServiceImpl implements ReadingClubService {
   private final ReadingClubRepository readingClubRepository;
   private final ReadingClubUserRepository readingClubUserRepository;
   private final UserRepository userRepository;
+  private final ChatService chatService;
 
   // 독서모임 생성
   @Override
@@ -51,8 +55,11 @@ public class ReadingClubServiceImpl implements ReadingClubService {
         .build();
     readingClubUserRepository.save(hostJoin);
 
-    // todo: 모임 생성 후 그룹채팅방 자동 생성
-    // chatService.createGroupChatRoom(saved);
+    // 그룹채팅방 자동 생성
+    CreateChatRoomRequestDto createChatRoomRequestDto = CreateChatRoomRequestDto.builder()
+        .readingClubId(saved.getId())
+        .build();
+    chatService.createChatRoom(createChatRoomRequestDto, host);
 
     return ReadingClubResponseDto.fromEntity(saved);
   }
@@ -79,8 +86,8 @@ public class ReadingClubServiceImpl implements ReadingClubService {
       throw new ReadingClubForbiddenException(ErrorCode.READING_CLUB_DELETE_DENIED);
     }
 
-    // todo: 해당 ChatRoom 삭제
-    // charService.deleteGroupChatRoom(club);
+    // 해당 ChatRoom 삭제
+    chatService.deleteChatRoomByReadingClub(readingClubId);
 
     readingClubUserRepository.deleteByReadingClub(club);
     readingClubRepository.delete(club);
