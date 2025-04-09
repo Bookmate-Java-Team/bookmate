@@ -34,4 +34,9 @@ public class CommentResponseDto {
     return CommentResponseDto.builder().author(comment.getUser().getNickname())
         .content(comment.getContent()).createdAt(comment.getCreatedAt()).build();
   }
+
+  public static CommentResponseDto toDto(Comment comment, List<CommentResponseDto> children) {
+    return CommentResponseDto.builder().author(comment.getUser().getNickname())
+        .content(comment.getContent()).createdAt(comment.getCreatedAt()).children(children).build();
+  }
 }

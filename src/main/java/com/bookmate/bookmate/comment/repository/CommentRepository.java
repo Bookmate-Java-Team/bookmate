@@ -13,8 +13,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
-  List<Comment> findAllByParent(Comment parentComment);
-
   Page<Comment> findAllByPostAndParentIsNullAndDeleteAtIsNull(Post post, Pageable pageable);
 
   @Modifying
@@ -24,4 +22,10 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
   @Modifying
   @Query("DELETE FROM Comment c WHERE c.parent.id = :parentId")
   void deleteChildren(Long parentId);
+
+  List<Comment> findAllByPostId(Long postId);
+
+  List<Comment> findAllByParentIdIn(List<Long> parentIds);
+
+  List<Comment> findAllByParentIdInAndDeleteAtIsNullOrderByCreatedAtAsc(List<Long> parentIds);
 }

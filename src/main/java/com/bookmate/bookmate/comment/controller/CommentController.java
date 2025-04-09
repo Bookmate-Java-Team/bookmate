@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -92,9 +93,9 @@ public class CommentController {
   }
 
   @GetMapping("/posts/{postId}/comments")
-  @Operation(summary = "특정 post의 comments 조회", description = "특정 게시글의 댓글들을 Pagenation으로 조회")
+  @Operation(summary = "특정 post의 comments 조회", description = "특정 게시글의 댓글들을 조회")
   @ApiResponse(responseCode = "200", description = "댓글 조회 성공")
-  public ResponseEntity<Page<CommentResponseDto>> getComments(
+  public ResponseEntity<List<CommentResponseDto>> getComments(
       @PathVariable Long postId,
       @RequestParam(value = "page", defaultValue = "0") int page,
       @RequestParam(value = "size", defaultValue = "10") int size
