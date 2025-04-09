@@ -16,6 +16,8 @@ import com.bookmate.bookmate.user.exception.UserNotFoundException;
 import com.bookmate.bookmate.user.repository.UserRepository;
 import jakarta.validation.Valid;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,7 +31,7 @@ public class CommentService {
   private final CommentRepository commentRepository;
   private final UserRepository userRepository;
   private final PostRepository postRepository;
-  private static final int MAX_DEPTH = 3;
+  private static final int MAX_DEPTH = 2;
 
   @Transactional
   public Comment addComment(Long userId, Long postId, CommentRequestDto commentRequestDto) {
@@ -81,24 +83,27 @@ public class CommentService {
   }
 
   @Transactional(readOnly = true)
-  public Page<CommentResponseDto> getComments(Long postId, Pageable pageable) {
+  public List<CommentResponseDto> getComments(Long postId, Pageable pageable) {
     Post post = findPostById(postId);
 
     Page<Comment> parentComments = commentRepository.findAllByPostAndParentIsNullAndDeleteAtIsNull(post, pageable);
+    List<Long> parentIds = parentComments.stream().map(Comment::getId).toList();
+    List<Comment> childComments = commentRepository.findAllByParentIdInAndDeleteAtIsNullOrderByCreatedAtAsc(parentIds);
 
-    return parentComments.map(this::convertToDtoWithChildren);
-  }
+    Map<Long, List<Comment>> childGrouped = childComments.stream()
+        .collect(Collectors.groupingBy(c -> c.getParent().getId()));
 
-  private CommentResponseDto convertToDtoWithChildren(Comment parentComment) {
-    CommentResponseDto dto = CommentResponseDto.toDto(parentComment);
+    return parentComments.stream()
+        .map(parent -> {
+          List<CommentResponseDto> children = childGrouped
+              .getOrDefault(parent.getId(), List.of())
+              .stream()
+              .map(CommentResponseDto::toDto)
+              .toList();
 
-    List<Comment> children = commentRepository.findAllByParent(parentComment);
-
-    List<CommentResponseDto> childrenDto = children.stream()
-        .map(this::convertToDtoWithChildren)
+          return CommentResponseDto.toDto(parent, children);
+        })
         .toList();
-    dto.setChildren(childrenDto);
-    return dto;
   }
 
   private User findUserById(Long id) {

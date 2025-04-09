@@ -12,7 +12,6 @@ public class RedisLikeService {
 
   private final StringRedisTemplate redisTemplate;
   public static final String LIKE_KEY_PATTERN = "likes:%s:%d";
-  public static final String LIKE_COUNT_KEY_PATTERN = "likes_count:%s:%d";
   public static final String LIKE_CANCEL_PATTERN = "likes_cancel:%s:%d";
 
   public void addLike(Long userId, TargetType targetType, Long targetId) {
